@@ -133,6 +133,7 @@ class SeleniumSpider() :
                 #self.browser.set_page_load_timeout(30)
                 #self.browser.set_script_timeout(30)
             except Exception as e :
+                print("getWebsite() ERROR: " + str(url))
                 print("getWebsite() ERROR: " + str(e))
                 time.sleep(2)
                 try_times += 1

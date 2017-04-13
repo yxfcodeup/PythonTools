@@ -20,7 +20,7 @@ from operator import add , itemgetter
 
 
 class Log() :
-    def __init__(self , log_dir , log_file) :
+    def __init__(self , log_dir , log_file , basic_way=False , log_level="NOTSET") :
         try :
             if False == os.path.exists(log_dir) :
                 os.mkdir(log_dir)
@@ -30,44 +30,51 @@ class Log() :
         except Exception as e :
             print("Log __init__ ERROR: " + str(e))
             print("Exit...")
-            os.exit(1)
+            exit(1)
         self.log_dir = log_dir
         self.log_file = log_file
         self.logger = None
-
-    def init(self) :
-        logging_config_dict = {
-            "version":1 , 
-            "disable_existing_loggers":False , 
-            "formatters":{
-                "standard":{
-                    "format":"%(asctime)s %(filename)s [line:%(lineno)d] %(levelname)s ---> %(message)s"
+        if basic_way :
+            logging.basicConfig(
+                level=logging.NOTSET ,
+                format = "%(asctime)s %(filename)s:%(lineno)d [PID:%(process)d][TID:%(thread)d][Func:%(funcName)s] %(levelname)s: %(message)s" ,
+                datefmt = "%a, %Y%m%d %H:%M:%S" ,
+                filename = self.log_file ,
+                filemode = "a")
+            self.logger = logging.getLogger()
+        else :
+            logging_config_dict = {
+                "version":1 , 
+                "disable_existing_loggers":False , 
+                "formatters":{
+                    "standard":{
+                        "format":"%(asctime)s %(filename)s:%(lineno)d [PID:%(process)d][TID:%(thread)d][Func:%(funcName)s] %(levelname)s: %(message)s" 
+                        } , 
                     } , 
-                } , 
-            "handlers":{
-                "handler_root":{
-                    "level":"NOTSET" , 
-                    "formatter":"standard" , 
-                    "class":"logging.handlers.RotatingFileHandler" , 
-                    "filename":self.log_file , 
-                    "maxBytes":1024*1024 , 
-                    "backupCount":0 , 
+                "handlers":{
+                    "handler_root":{
+                        "level":"NOTSET" , 
+                        "formatter":"standard" , 
+                        "class":"logging.handlers.RotatingFileHandler" , 
+                        "filename":self.log_file , 
+                        "maxBytes":1024*1024 , 
+                        "backupCount":0 , 
+                        } , 
+                    "handler_stderr":{
+                        "level":"INFO" , 
+                        "formatter":"standard" , 
+                        "class":"logging.StreamHandler" , 
+                        "stream":"ext://sys.stderr"
+                        } , 
                     } , 
-                "handler_stderr":{
-                    "level":"INFO" , 
-                    "formatter":"standard" , 
-                    "class":"logging.StreamHandler" , 
-                    "stream":"ext://sys.stderr"
+                "root":{
+                    "handlers":["handler_root" , "handler_stderr"] ,  
+                    "level":log_level
                     } , 
-                } , 
-            "root":{
-                "handlers":["handler_root" , "handler_stderr"] ,  
-                "level":"NOTSET"
-                } , 
-            }
-        logging.config.dictConfig(logging_config_dict)
-        self.logger = logging.getLogger()
-
+                }
+            logging.config.dictConfig(logging_config_dict)
+            self.logger = logging.getLogger()
+    
     def info(self , info_str) :
         self.logger.info(str(info_str))
 
