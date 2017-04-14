@@ -1,19 +1,4 @@
-#_____________________________md5.py________________________________________________
 # -*- coding: utf-8 -*-
-
-#-----------------------------------------------------------------------------------
-# Name          : mysqlDB
-# Version       : 1.0.0
-# Author        : yxf
-# Language      : Python 3.4.3
-# Start time    : 2016-09-12 15:06
-# End time      :
-# Function      : 
-# Operation     :
-#-----------------------------------------------------------------------------------
-# PREPARATION
-# $ sudo pip3 install pymysql 
-#-----------------------------------------------------------------------------------
 
 import os
 import sys
@@ -29,6 +14,12 @@ import logging.config
 import logging.handlers
 import hashlib
 
+logging.basicConfig(
+        level = logging.NOTSET , 
+        format = "%(asctime)s %(filename)s:%(lineno)d [PID:%(process)d][TID:%(thread)d][Func:%(funcName)s] %(levelname)s: %(message)s" ,
+        datefmt = "%a, %Y%m%d %H:%M:%S"
+        )
+logger = logging.getLogger()
 
 def getmd5(in_str) :
     res = ""
@@ -37,6 +28,20 @@ def getmd5(in_str) :
     res = md.hexdigest()
     return res
 
+def getsha(in_str , tag=1) :
+    if 1 == tag :
+        return hashlib.sha1().update(in_str.encode("utf-8")).hexdigest()
+    elif 224 == tag :
+        return hashlib.sha224().update(in_str.encode("utf-8")).hexdigest()
+    elif 256 == tag :
+        return hashlib.sha256().update(in_str.encode("utf-8")).hexdigest()
+    elif 384 == tag :
+        return hashlib.sha384().update(in_str.encode("utf-8")).hexdigest()
+    elif 512 == tag :
+        return hashlib.sha512().update(in_str.encode("utf-8")).hexdigest()
+    else :
+        logger.error("support list: 1, 224, 256, 384, 512")
+        return False
 
 
 if __name__ == "__main__" :

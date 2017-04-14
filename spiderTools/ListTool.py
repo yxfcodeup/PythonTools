@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import os
 import sys
 import re
@@ -11,15 +13,27 @@ import tempfile
 import random
 import json
 import math
+import logging
+import logging.config
+import logging.handlers
 
+logging.basicConfig(
+        level = logging.NOTSET , 
+        format = "%(asctime)s %(filename)s:%(lineno)d [PID:%(process)d][TID:%(thread)d][Func:%(funcName)s] %(levelname)s: %(message)s" ,
+        datefmt = "%a, %Y%m%d %H:%M:%S"
+        )
+logger = logging.getLogger()
 
-
+# list转化为string
+# @param in_list 待转换list
+# @param separator 分隔符
+# @return string
 def listFormatString(in_list , separator=",") :
-    if None==in_list or type(in_list)!=type(list()) or 0==len(in_list) :
-        print("tools.listFormatString() ERROR: in_list is error.")
+    if None==in_list or (not isinstance(in_list , list)) or 0==len(in_list) :
+        logger.error("in_list is error.")
         return False
-    if type(separator) != type(str()) :
-        print("tools.listFormatString() ERROR: separator is not string1")
+    if not isinstance(separator , str) :
+        logger.error("separator is not string.")
         return False
     res = ""
     stan = "{0}" + separator
