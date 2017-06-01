@@ -11,6 +11,9 @@ import tempfile
 import random
 import json
 import math
+import logging
+import logging.config
+import logging.handlers
 #External Moduls
 import requests
 from bs4 import BeautifulSoup
@@ -22,6 +25,13 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.common.exceptions import *
+
+logging.basicConfig(
+        level = logging.NOTSET , 
+        format = "%(asctime)s %(filename)s:%(lineno)d [PID:%(process)d][TID:%(thread)d][Func:%(funcName)s] %(levelname)s: %(message)s" ,
+        datefmt = "%a, %Y%m%d %H:%M:%S"
+        )
+logger = logging.getLogger()
 
 """
 # get proxies from proxies file

@@ -1,16 +1,4 @@
-#_____________________________requestsSpider.py____________________________________
 # -*- coding: utf-8 -*-
-
-#-----------------------------------------------------------------------------------
-# Name          : requestsSpider
-# Version       : 1.0.0
-# Author        : yxf
-# Language      : Python 3.4.3
-# Start time    : 2016-08-11 14:20
-# End time      :
-# Function      : 
-# Operation     :
-#-----------------------------------------------------------------------------------
 
 #System Moduls
 import os
@@ -29,8 +17,16 @@ import logging.handlers
 #External Moduls
 import requests
 
+logging.basicConfig(
+        level = logging.NOTSET , 
+        format = "%(asctime)s %(filename)s:%(lineno)d [PID:%(process)d][TID:%(thread)d][Func:%(funcName)s] %(levelname)s: %(message)s" ,
+        datefmt = "%a, %Y%m%d %H:%M:%S"
+        )
+logger = logging.getLogger()
 
+# requests爬虫类
 class RequestsSpider() :
+    # @param headers
     def __init__(self , headers=None) :
         self.headers = {
                 "User-Agent":"Mozilla/5.0 (X11; Linux x86_64; rv:38.0) Gecko/20100101 Firefox/38.0" , 
@@ -38,9 +34,14 @@ class RequestsSpider() :
         if None != headers :
             self.headers = headers
 
+    # @param url
+    # @param try_times
+    # @param in_timeout
+    # @param content_or_text
+    # @param default_code_type
+    # @param code_type_rex  utf-8 , utf8 , gb2312 , gb-2312 , big5 , big-5 , ansi
     def startRequests(self , url , try_times=5 , in_timeout=20 , content_or_text=1 , default_code_type="utf-8" , code_type_rex=None) :
         #content_or_text:content-->2    text-->1
-        #code_type_rex:utf-8 , utf8 , gb2312 , gb-2312 , big5 , big-5 , ansi
         requests.adapters.DEFAULT_RETRIES = try_times
         page_html = ""
         try :

@@ -11,19 +11,28 @@ import tempfile
 import random
 import json
 import math
+import logging
+import logging.config
+import logging.handlers
 
+logging.basicConfig(
+        level = logging.NOTSET , 
+        format = "%(asctime)s %(filename)s:%(lineno)d [PID:%(process)d][TID:%(thread)d][Func:%(funcName)s] %(levelname)s: %(message)s" ,
+        datefmt = "%a, %Y%m%d %H:%M:%S"
+        )
+logger = logging.getLogger()
 
 #ord(".")=46 , ord("0")=48 , ord("1")=49 , ord("2")=50 , ord("3")=51 , ord("4")=52 , ord("5")=53 , ord("6")=54 , ord("7")=55 , ord("8")=56 , ord("9")=57
-def isnumber(nstr) :
-    if type(nstr) != type(str()) :
-        print("tools.isnumber(): " + str(nstr) + " is not string!Cannot judge it!")
+def isdigital(nstr) :
+    if not isinstance(nstr , str) :
+        logger.error(str(nstr) + " is not string!Cannot judge it!")
         return False
     num_str = ""
     num_dot = 0
     if 0 == len(nstr) :
         return False
     if 1 == len(nstr) :
-        if ord(nstr)>=48 and ord(nstr)<=57 :
+        if ord(nstr) >= 48 and ord(nstr) <= 57 :
             return True
         else :
             return False
@@ -45,4 +54,4 @@ if __name__ == "__main__" :
     c = " "
     d = ""
     e = "1.0"
-    print(isnumber(e))
+    print(isdigital(e))
