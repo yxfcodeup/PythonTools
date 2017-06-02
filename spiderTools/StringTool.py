@@ -16,7 +16,7 @@ import logging.config
 import logging.handlers
 
 logging.basicConfig(
-        level = logging.NOTSET , 
+        level = logging.INFO , 
         format = "%(asctime)s %(filename)s:%(lineno)d [PID:%(process)d][TID:%(thread)d][Func:%(funcName)s] %(levelname)s: %(message)s" ,
         datefmt = "%a, %Y%m%d %H:%M:%S"
         )

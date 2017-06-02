@@ -96,6 +96,7 @@ def wget(wget_command) :
     os.system(wget_command)
     return True
 
+
 def getParsedArgs() :
     usage = "Usage: %prog host[options]"
     # Create the parser
